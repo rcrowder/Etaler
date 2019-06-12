@@ -20,3 +20,18 @@ if(ETALER_ENABLE_OPENCL)
 	add_executable(backend2backend backend2backend.cpp)
 	target_link_libraries(backend2backend Etaler)
 endif()
+
+if(ETALER_MKL_DNN_EXAMPLE)
+	find_package(MKLDNN REQUIRED)
+
+	if(NOT ${MKLDNN_FOUND})
+		message(FATAL_ERROR "Could not locate Intel MKL-DNN")
+	else()
+		message(STATUS "Found existing Intel MKL-DNN")
+	endif()
+
+	project(mkl-dnn_example CXX)
+	add_executable(mkl-dnn_example mkl-dnn_example.cpp)
+	target_link_libraries(mkl-dnn_example Etaler)
+	target_link_libraries(mkl-dnn_example MKLDNN::mkldnn)
+endif()
